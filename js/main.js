@@ -38,9 +38,9 @@ class Player {
 
 class Obstacle {
     constructor() {
-        this.width = 30;
-        this.height = 15;
-        this.positionX = 50 - this.width / 2;
+        this.width = 20;
+        this.height = 10;
+        this.positionX = Math.floor(Math.random() * (100 - this.width - 0 + 1)) + 0;  //this formula gives a random number between 0 and (100 - this.width)
         this.positionY = 100;
         this.domElement = null;
 
@@ -68,16 +68,35 @@ const player = new Player();
 
 let obstacleArr = []; // will store instances of the class Obstacle
 
+
+// create obstacles
 setInterval(() => {
     const newObstacle = new Obstacle();
     obstacleArr.push(newObstacle);
 }, 4000);
 
+
+
+//move all obstacles
 setInterval(() => {
    obstacleArr.forEach((obstacleInstace) => {
-        obstacleInstace.moveDown();
+    
+    //move current obstacle
+    obstacleInstace.moveDown();
+    
+    //detect colision
+    if (
+        player.positionX < obstacleInstace.positionX + obstacleInstace.width &&
+        player.positionX + player.width > obstacleInstace.positionX &&
+        player.positionY < obstacleInstace.positionY + obstacleInstace.height &&
+        player.positionY + player.height > obstacleInstace.positionY
+    ) {
+        console.log("game over");
+        location.href = "gameover.html";
+        
+    }
    }) 
-}, 100);
+}, 50);
 
 
 document.addEventListener('keydown', (e) => {
